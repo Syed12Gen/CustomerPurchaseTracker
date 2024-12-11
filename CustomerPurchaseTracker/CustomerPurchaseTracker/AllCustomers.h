@@ -5,10 +5,11 @@
 //  Created by Syed12Gen on 12/10/24.
 //
 
-#ifndef ALLCUSTOMERS_H    // Header guard to prevent multiple inclusions
+#ifndef ALLCUSTOMERS_H
 #define ALLCUSTOMERS_H
 
 #include <string>
+#include <vector>  // Include vector for collection
 using namespace std;
 
 class AllCustomers {
@@ -26,37 +27,34 @@ private:
     string phoneNumber;   // Contact phone number
 
 public:
-    
-    void loadFromFile(const std::string& filename); // Load customers from a file
-    void printAll() const; // Print all customers
-    
     // Constructors
-    AllCustomers();   // Default constructor - initializes empty customer
-    
-    // Parameterized constructor - creates customer with all information
+    AllCustomers();   // Default constructor
     AllCustomers(const string& fn, const string& ln, const string& acc,
-                const string& addr, const string& c, const string& st,
-                const string& zip, const string& phone);
+                 const string& addr, const string& c, const string& st,
+                 const string& zip, const string& phone);
 
-    // Getter methods - return customer information
-    string getFirstName() const { return firstName; }     // Returns first name
-    string getLastName() const { return lastName; }       // Returns last name
-    string getAccountNumber() const { return accountNumber; }  // Returns account number
-    string getFullAddress() const;    // Returns formatted full address
-    string getPhoneNumber() const { return phoneNumber; } // Returns phone number
+    // New static function to load customer data
+    static vector<AllCustomers> loadFromFile(const string& filename);
 
-    // Setter methods - modify customer information
-    void setFirstName(const string& fn) { firstName = fn; }   // Update first name
-    void setLastName(const string& ln) { lastName = ln; }     // Update last name
-    
-    // Update complete address
+    // Print all customers (non-static as it operates on an instance)
+    void printAll() const;
+
+    // Getter methods
+    string getFirstName() const { return firstName; }
+    string getLastName() const { return lastName; }
+    string getAccountNumber() const { return accountNumber; }
+    string getFullAddress() const;
+    string getPhoneNumber() const { return phoneNumber; }
+
+    // Setter methods
+    void setFirstName(const string& fn) { firstName = fn; }
+    void setLastName(const string& ln) { lastName = ln; }
     void setAddress(const string& addr, const string& c,
-                   const string& st, const string& zip);
-                   
-    void setPhoneNumber(const string& phone) { phoneNumber = phone; }  // Update phone number
+                    const string& st, const string& zip);
+    void setPhoneNumber(const string& phone) { phoneNumber = phone; }
 
-    // Operator overloads for functionality
-    bool operator<(const AllCustomers& other) const;         // For sorting customers
+    // Operator overloads
+    bool operator<(const AllCustomers& other) const;         // Sorting comparison
     AllCustomers& operator=(const AllCustomers& other);      // Assignment operator
 };
 

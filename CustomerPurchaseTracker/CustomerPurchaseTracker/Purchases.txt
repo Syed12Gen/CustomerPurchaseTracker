@@ -1,0 +1,10 @@
+// purchases.txt
+ACC001|The Great Gatsby|2024-01-15|19.99
+ACC001|To Kill a Mockingbird|2024-01-20|15.99
+ACC002|1984|2024-01-10|12.99
+ACC002|The Hobbit|2024-01-25|24.99
+ACC003|Pride and Prejudice|2024-02-01|9.99
+ACC003|The Catcher in the Rye|2024-02-05|14.99
+ACC004|Lord of the Rings|2024-02-10|29.99
+ACC005|Dune|2024-02-15|21.99
+ACC005|Foundation|2024-02-20|18.99

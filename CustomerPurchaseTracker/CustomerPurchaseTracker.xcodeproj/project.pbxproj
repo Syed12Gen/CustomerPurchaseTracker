@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A524D7AB2D096CC900C9DC7D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A5265DBB2D08FF100027130B /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -22,9 +31,23 @@
 		A5265DBD2D08FF100027130B /* CustomerPurchaseTracker */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CustomerPurchaseTracker; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+		A524D7AE2D096CD900C9DC7D /* Exceptions for "CustomerPurchaseTracker" folder in "Copy Files" phase from "CustomerPurchaseTracker" target */ = {
+			isa = PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet;
+			buildPhase = A524D7AB2D096CC900C9DC7D /* CopyFiles */;
+			membershipExceptions = (
+				Customers.txt,
+				Purchases.txt,
+			);
+		};
+/* End PBXFileSystemSynchronizedGroupBuildPhaseMembershipExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A5265DBF2D08FF100027130B /* CustomerPurchaseTracker */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				A524D7AE2D096CD900C9DC7D /* Exceptions for "CustomerPurchaseTracker" folder in "Copy Files" phase from "CustomerPurchaseTracker" target */,
+			);
 			path = CustomerPurchaseTracker;
 			sourceTree = "<group>";
 		};
@@ -67,6 +90,7 @@
 				A5265DB92D08FF100027130B /* Sources */,
 				A5265DBA2D08FF100027130B /* Frameworks */,
 				A5265DBB2D08FF100027130B /* CopyFiles */,
+				A524D7AB2D096CC900C9DC7D /* CopyFiles */,
 			);
 			buildRules = (
 			);

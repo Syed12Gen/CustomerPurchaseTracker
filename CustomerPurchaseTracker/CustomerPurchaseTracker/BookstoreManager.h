@@ -5,26 +5,54 @@
 //  Created by Syed12Gen on 12/11/24.
 //
 
-#ifndef BOOKSTOREMANAGER_H
-#define BOOKSTOREMANAGER_H
+// BookstoreManager.h
+#ifndef BOOKSTORE_MANAGER_H
+#define BOOKSTORE_MANAGER_H
 
-#include <iostream>
-#include <string>
 #include <vector>
 #include "AllCustomers.h"
+#include "AllPurchases.h"
+using namespace std;
 
 class BookstoreManager {
-public:
-    BookstoreManager(const std::string& customerFile, const std::string& purchaseFile);
-    void run(); // Start the menu-driven program
-
 private:
-    AllCustomers allCustomers; // Holds customer data
-    std::string customerFile;  // Path to the customer file
+    vector<AllCustomers> customers;
+    vector<AllPurchases> purchases;
+    string customerFileName;
+    string purchaseFileName;
 
-    void displayMenu() const;  // Display menu options
-    void handleMenuSelection(int choice); // Process menu options
+    // Helper functions
+    void loadCustomersFromFile();
+    void loadPurchasesFromFile();
+    void saveCustomersToFile(const std::string& filename);
+    void savePurchasesToFile(const std::string& filename);
+    bool validateAccountNumber(const std::string& accNum) const;
+
+public:
+    void debugPrintLoadedData() const;
+    BookstoreManager(const std::string& custFile, const std::string& purchFile);
+    
+    
+    // Customer management
+    void addCustomer();
+    void addCustomersRecursive();
+    void updateCustomer();
+    void deleteCustomer();
+    void printAllCustomers() const;
+    void printCustomersByOrder(bool ascending);
+    void printCustomerDetails(const std::string& accountNum) const;
+    
+    // Purchase management
+    void addPurchase();
+    void addPurchasesRecursive();
+    double getCustomerTotalSpend(const std::string& accountNum) const;
+    
+    // File operations
+    void saveData(bool createNewFiles);
+    
+    // Menu
+    void displayMenu();
+    void run();
 };
 
 #endif
-

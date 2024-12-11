@@ -1,0 +1,5 @@
+John|Smith|ACC001|123 Main St|Portland|OR|97201|503-555-0101
+Emma|Johnson|ACC002|456 Oak Ave|Seattle|WA|98101|206-555-0202
+Michael|Brown|ACC003|789 Pine Rd|San Francisco|CA|94101|415-555-0303
+Sarah|Davis|ACC004|321 Elm St|Los Angeles|CA|90001|213-555-0404
+David|Wilson|ACC005|654 Maple Dr|Vancouver|WA|98660|360-555-0505

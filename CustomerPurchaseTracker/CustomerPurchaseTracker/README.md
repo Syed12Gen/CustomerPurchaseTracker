@@ -139,3 +139,15 @@ This project simulates a **bookstore management system** with the following feat
 - Ensure private members (e.g., the vectors) are accessed or modified only through these public functions.
 
 ---
+
+
+// For nextDay:
+// 1. Determine the logic for sorting customers in ascending order.
+// 2. Generate and display a detailed customer receipt.
+// 3. Figure out how to add a new customer, particularly the logic behind the account numbers.
+//    For example, why does it not allow using the pattern "ACC006"?
+// 4. Test all other options;
+// 5. Options 7-11 seem to be working, but you need a better implementation for handling multiple purchases.
+// 6. Adding a new customer and multiple customers appears to have some issues; investigate further.
+// 7. Provide users with an additional option to return to the main menu after completing an action.
+
