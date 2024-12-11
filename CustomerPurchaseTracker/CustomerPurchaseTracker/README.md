@@ -1,76 +1,90 @@
-# Project Overview - Code Journey Documentation
+# Bookstore Management System
 
-This project is structured to simulate a bookstore management system. Below is the basic structure of the project, including all required files and their purposes.
-
-## Project Description
-
-A 2-class menu-driven program designed to track and manage customer account information and purchases for a business. 
-
-- On launch, the program introduces itself and the business.
-- Loads existing customer account information from a file of any size into a vector of a class called `AllCustomers`.
-- Loads purchase information from a file of any size into a vector of a class called `AllPurchases`.
+A menu-driven program to manage customer accounts and purchase records efficiently. This project uses dynamic data structures and encapsulation to create a robust and scalable solution.
 
 ---
 
-## My Understanding
+## 📜 Project Requirements
 
-- **Classes Needed**: 
-  - `AllCustomers`
-  - `AllPurchases`
+This project simulates a **bookstore management system** with the following features:
 
-- **Why Use `Vector`**:
-  - It is a dynamic array that can grow using `push_back()` or shrink data as needed.
-  - Provides utility functions like `size()` to get the number of elements.
-  - Reduces the risk of memory leaks and segmentation faults with automatic memory management.
+- **Customer Management**: Load customer account data from a file into a vector of the `AllCustomers` class.
+- **Purchase Management**: Load purchase records from a file into a vector of the `AllPurchases` class.
+- **Dynamic Data Handling**: Supports files of any size and dynamically adjusts storage as needed.
 
-## Data Models
-
-### AllCustomers Data Model
-The `AllCustomers` class should include (but is not limited to) the following attributes:
-- **First Name**
-- **Last Name**
-- **Account #**
-- **Street Address**
-- **City**
-- **State**
-- **Zip Code**
-- **Phone Number**
-
-**My Understanding**:
-- These attributes are private members of the `AllCustomers` class and will be declared inside the `private` section.
-- Each attribute can be declared as a `std::string`.
-- A constructor will be created in the `public` section to initialize these attributes using parameters.
-- Getters and setters will be written to access and modify private data safely:
-  - **Getters**: Retrieve the value of private members.
-  - **Setters**: Update the value of private members.
+### Classes Overview (From Project Question)
+- **`AllCustomers`**: Manages customer account details.
+- **`AllPurchases`**: Tracks purchase records associated with customers.
 
 ---
 
-### AllPurchases Data Model
-The `AllPurchases` class should include (but is not limited to) the following attributes:
-- **Account Number**
-- **Item**
-- **Date**
-- **Amount**
+## 🧠 My Understanding
 
-**My Understanding**:
-- These attributes are private members of the `AllPurchases` class and will be declared inside the `private` section.
-- A constructor will be created in the `public` section to initialize these attributes using parameters.
-- Getters and setters will be written to ensure secure access and modification of private data.
+### Why Use `Vector`?
+- A `vector` is a dynamic array that grows and shrinks as needed.
+- Key advantages:
+  - `push_back()`: Add elements dynamically.
+  - `size()`: Get the current number of elements.
+  - Memory safety: Reduces risks of leaks and segmentation faults through automatic memory management.
 
-## Extra basic knowledge of using Getters and Setters Across Classes or Files
+---
 
-### Why Getters and Setters Are Useful:
-1. **Encapsulation**: They protect private data by controlling how it is accessed and modified.
-2. **Validation**: Setters can include checks to ensure data integrity when updating values.
-3. **Consistency**: Ensure all access and updates follow a standardized process, reducing bugs.
-4. **Flexibility**: If internal implementation changes, only the getter and setter need updates, not the entire codebase.
+## 🗂️ Data Models
 
-### How They Help in the Full Project:
-- **Cross-Class Access**: Getters allow us to retrieve private data from one class while maintaining its encapsulation.
-- **Data Updates**: Setters enable secure and controlled updates to private data from other classes or files.
-- **Reusability**: By using getters and setters, we can easily reuse classes in different parts of the project without directly exposing internal details.
+### `AllCustomers` Data Model
+**Attributes (From Project Requirements)**:
+- First Name
+- Last Name
+- Account #
+- Street Address
+- City
+- State
+- Zip Code
+- Phone Number
 
-For example:
-- In the `AllCustomers` class, we can use getters to retrieve a customer’s account number in another class to match purchase records from the `AllPurchases` class.
-- Setters can be used to update customer details or purchase amounts when required, ensuring data is always consistent and valid.
+**💡 My Understanding**:
+- These attributes will be **private** members within the `AllCustomers` class.
+- Each attribute will use a suitable data type (e.g., `std::string` for text fields).
+- A **constructor** in the `public` section will initialize these attributes.
+- **Getters and setters** will:
+  - **Getters**: Retrieve private data.
+  - **Setters**: Update private data securely and validate changes if necessary.
+
+---
+
+### `AllPurchases` Data Model
+**Attributes (From Project Requirements)**:
+- Account Number
+- Item
+- Date
+- Amount
+
+**💡 My Understanding**:
+- These attributes will also be **private**.
+- The class will feature:
+  - A **constructor** to initialize the data.
+  - **Getters and setters** to access and modify data while preserving encapsulation.
+
+---
+
+## 💡 Why Use Getters and Setters?
+
+1. **Encapsulation**: Protect private data by controlling access.
+2. **Validation**: Ensure data integrity through setter checks.
+3. **Consistency**: Centralized access patterns reduce bugs.
+4. **Flexibility**: Internal implementation can change without impacting the overall program.
+
+---
+
+## 🛠️ How Getters and Setters Work in This Project
+
+- **Cross-Class Access**: Getters in `AllCustomers` retrieve private account numbers for purchase matching in `AllPurchases`.
+- **Data Updates**: Setters ensure that updates like changing customer details or modifying purchase amounts are controlled and validated.
+- **Reusability**: The standardized approach ensures scalability and reusability of classes in different contexts.
+
+**Example**:
+- Use a getter in `AllCustomers` to fetch an account number.
+- Use a setter in `AllPurchases` to update purchase amounts safely.
+
+---
+
