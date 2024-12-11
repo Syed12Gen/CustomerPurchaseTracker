@@ -1,6 +1,6 @@
-# Bookstore Management System
+# My Thought Process While Solving This Problem
 
-A menu-driven program to manage customer accounts and purchase records efficiently. This project uses dynamic data structures and encapsulation to create a robust and scalable solution.
+This is not a typical README file; it's a record of my thought process while solving the problem. I feel like I should do this more often as it keeps me engaged with the problem. I also always feel sad about not documenting the problems and errors I dealt with and how I solved them because I forget after a few days. This is also a good exercise for staying engaged, and it helps me quickly jog my memory when I face the same errors and issues in the future. You could say this README is my hobby. I have created another README specifically for the project, where you can read about how the project works.
 
 ---
 

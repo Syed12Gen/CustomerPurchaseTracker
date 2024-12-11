@@ -2,7 +2,7 @@
 //  AllPurchases.h
 //  CustomerPurchaseTracker
 //
-//  Created by Syed12Gen on 12/10/24.
+//  Created by Syed/Users/syed12gen/Documents/Projects/CustomerPurchaseTracker/CustomerPurchaseTracker/AllPurchases.h12Gen on 12/10/24.
 //
 
 #ifndef ALLPURCHASES_H    // Header guard to prevent multiple inclusions

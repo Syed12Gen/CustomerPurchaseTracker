@@ -26,6 +26,10 @@ private:
     string phoneNumber;   // Contact phone number
 
 public:
+    
+    void loadFromFile(const std::string& filename); // Load customers from a file
+    void printAll() const; // Print all customers
+    
     // Constructors
     AllCustomers();   // Default constructor - initializes empty customer
     
