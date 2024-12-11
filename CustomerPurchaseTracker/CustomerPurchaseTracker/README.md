@@ -88,3 +88,54 @@ This project simulates a **bookstore management system** with the following feat
 
 ---
 
+### **1. Menu-driven program that loops after each selection until the user chooses to exit**
+**💡 My Understanding**:
+- The program needs to continuously display a menu and process user input until the user selects the "exit" option.
+- Each menu option should trigger a specific operation, such as printing data, adding a customer, or updating records.
+
+**🛠️ How I Plan to Write This**:
+- Write a `run()` function in `BookstoreManager` to handle the menu loop.
+- Use a `while (true)` loop that:
+  1. Displays the menu using a `displayMenu()` function.
+  2. Takes user input and calls the corresponding function for the selected operation.
+  3. Includes a condition to break the loop when the user chooses to exit.
+- Use a `switch` or `if-else` structure to handle user input and connect it to the appropriate functionality.
+
+---
+
+### **2. Load all Customer account info from a file into a vector of the class**
+**💡 My Understanding**:
+- Customer data (e.g., name, account number, address) will be stored in a file, and the program should load this data into a `vector` for dynamic management.
+- Each line in the file represents a customer and contains all the required fields.
+
+**🛠️ How I Plan to Write This**:
+- Create a function `loadFromFile(const std::string& filename)` in `BookstoreManager`.
+- Use `std::ifstream` to open and read the file line by line.
+- Parse each line into the required fields, create a `Customer` object, and add it to the `customers` vector using `push_back()`.
+- Handle file errors (e.g., missing file or invalid data) gracefully by showing error messages or creating a new file if necessary.
+
+---
+
+### **3. Use a vector within the class to store purchase information**
+**💡 My Understanding**:
+- Purchase records need to be stored dynamically in a `vector`. Each record will have fields like account number, item, date, and amount.
+- The `vector` will allow me to easily add, update, or delete purchase data.
+
+**🛠️ How I Plan to Write This**:
+- Define a `std::vector<Purchase>` as a private member in `BookstoreManager`.
+- Create a function `loadPurchasesFromFile(const std::string& filename)` to read and parse the purchase data from a file.
+- For each line in the file, create a `Purchase` object and add it to the `purchases` vector using `push_back()`.
+
+---
+
+### **4. All functions should be public member functions of your classes**
+**💡 My Understanding**:
+- All operations (e.g., adding, updating, deleting, printing) must be implemented as public functions. This ensures they can be accessed from the main program.
+- Public functions will act as an interface between the `BookstoreManager` class and the `main` program, keeping the data manipulation logic encapsulated.
+
+**🛠️ How I Plan to Write This**:
+- Declare all required functions (e.g., `addCustomer()`, `addPurchase()`, `printAllCustomers()`) as `public` in `BookstoreManager.h`.
+- Implement these functions in `BookstoreManager.cpp` to encapsulate the logic for interacting with the `customers` and `purchases` vectors.
+- Ensure private members (e.g., the vectors) are accessed or modified only through these public functions.
+
+---
