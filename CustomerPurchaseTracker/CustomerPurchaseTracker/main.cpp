@@ -4,6 +4,7 @@
 //
 //  Created by Syed Haider on 12/10/24.
 //
+
 // Main.cpp
 #include "BookstoreManager.h"
 #include <iostream>
@@ -18,3 +19,4 @@ int main () {
     manager.run();
     return 0;
 }
+

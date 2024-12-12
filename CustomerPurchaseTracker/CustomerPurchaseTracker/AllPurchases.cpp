@@ -26,3 +26,4 @@ AllPurchases& AllPurchases::operator=(const AllPurchases& other) {
     }
     return *this;
 }
+

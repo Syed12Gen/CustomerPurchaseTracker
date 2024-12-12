@@ -13,6 +13,9 @@
 #include <algorithm>
 #include <sstream>
 #include <ctime>
+#include <string>
+#include <vector>
+#include <limits>
 
 using namespace std;
 
@@ -23,6 +26,7 @@ BookstoreManager::BookstoreManager(const string& custFile, const string& purchFi
     loadPurchasesFromFile();
 }
 
+// Debugging utility: Prints all loaded customer data to the console.
 void BookstoreManager::debugPrintLoadedData() const {
     cout << "\nLoaded Customer Data:\n";
     for (const auto& customer : customers) {
@@ -33,7 +37,8 @@ void BookstoreManager::debugPrintLoadedData() const {
     cout << "\nTotal customers loaded: " << customers.size() << "\n\n";
 }
 
-// File Operations
+// Loads customer data from a file and populates the `customers` vector.
+// Assumes a pipe-delimited format for customer details
 void BookstoreManager::loadCustomersFromFile() {
     ifstream file(customerFileName);
     if (!file) {
@@ -56,12 +61,15 @@ void BookstoreManager::loadCustomersFromFile() {
         getline(ss, zip, '|');
         getline(ss, phone);
         
+        // Ensure valid customer details before adding to the list
         if (!fn.empty() && !ln.empty() && !acc.empty()) {
             customers.emplace_back(fn, ln, acc, addr, city, state, zip, phone);
         }
     }
 }
 
+// Loads purchase data from a file and populates the `purchases` vector.
+// Assumes a pipe-delimited format for purchase details.
 void BookstoreManager::loadPurchasesFromFile() {
     ifstream file(purchaseFileName);
     if (!file) {
@@ -71,7 +79,7 @@ void BookstoreManager::loadPurchasesFromFile() {
 
     string line;
     while (getline(file, line)) {
-        if (line.empty() || line[0] == '/') continue;
+        if (line.empty() || line[0] == '/') continue; // Skip comments and empty lines
         
         stringstream ss(line);
         string acc, item, date;
@@ -81,13 +89,15 @@ void BookstoreManager::loadPurchasesFromFile() {
         getline(ss, date,'|');
         ss >> amount;
         
+        // Validate account number and amount before adding to the list
         if (validateAccountNumber(acc) && isValidAmount(amount)) {
             purchases.emplace_back(acc, item, date, amount);
         }
     }
 }
 
-// Helper Functions
+// Validates the format of an account number (e.g., "ACC123").
+// Ensures the account number starts with "ACC" and is followed by digits.
 bool BookstoreManager::isValidAccountNumberFormat(const string& accNum) const {
     if (accNum.length() != 6) return false;
     if (accNum.substr(0, 3) != "ACC") return false;
@@ -96,6 +106,8 @@ bool BookstoreManager::isValidAccountNumberFormat(const string& accNum) const {
     return all_of(numPart.begin(), numPart.end(), ::isdigit);
 }
 
+// Generates a new unique account number in the format "ACC###".
+// Finds the highest existing account number and increments it.
 string BookstoreManager::generateNewAccountNumber() const {
     int maxNum = 0;
     for (const auto& customer : customers) {
@@ -113,6 +125,7 @@ string BookstoreManager::generateNewAccountNumber() const {
     return oss.str();
 }
 
+// Checks if a given account number exists in the customer database.
 bool BookstoreManager::validateAccountNumber(const string& accNum) const {
     if (accNum.empty()) return false;
     
@@ -122,6 +135,7 @@ bool BookstoreManager::validateAccountNumber(const string& accNum) const {
     return it != customers.end();
 }
 
+// Validates a date in the format "YYYY-MM-DD".
 bool BookstoreManager::isValidDate(const string& date) const {
     if (date.length() != 10 || date[4] != '-' || date[7] != '-') {
         cout << "\tInvalid date format. Please use YYYY-MM-DD\n";
@@ -144,6 +158,7 @@ bool BookstoreManager::isValidDate(const string& date) const {
     }
 }
 
+// Validates a purchase amount to ensure it falls within a valid range.
 bool BookstoreManager::isValidAmount(double amount) const {
     if (amount <= 0.0 || amount >= 10000.0) {
         cout << "\tAmount must be between $0.01 and $9,999.99\n";
@@ -152,22 +167,22 @@ bool BookstoreManager::isValidAmount(double amount) const {
     return true;
 }
 
+// Compares two customers based on their account numbers for sorting.
+// Supports ascending or descending order based on a flag.
 bool BookstoreManager::compareCustomers(const AllCustomers& a, const AllCustomers& b, bool ascending) {
-    int lastNameComp = a.getLastName().compare(b.getLastName());
-    if (lastNameComp != 0) {
-        return ascending ? (lastNameComp < 0) : (lastNameComp > 0);
-    }
+    // Extract numeric parts
+    int aNum = stoi(a.getAccountNumber().substr(3));
+    int bNum = stoi(b.getAccountNumber().substr(3));
     
-    int firstNameComp = a.getFirstName().compare(b.getFirstName());
-    if (firstNameComp != 0) {
-        return ascending ? (firstNameComp < 0) : (firstNameComp > 0);
+    // Return comparison based on ascending/descending flag
+    if (ascending) {
+        return aNum < bNum;
+    } else {
+        return aNum > bNum;
     }
-    
-    return ascending ?
-        (a.getAccountNumber() < b.getAccountNumber()) :
-        (a.getAccountNumber() > b.getAccountNumber());
 }
 
+// Waits for the user to press Enter before continuing.
 void BookstoreManager::waitForEnter() const {
     cout << "\n\tPress Enter to continue...";
     cin.get();
@@ -194,13 +209,22 @@ void BookstoreManager::displayMenu() {
     cout << "\n\tEnter your choice: ";
 }
 
+// Main execution loop for the Bookstore Manager.
+// Displays a menu, takes user input for an action, and calls the corresponding function.
 void BookstoreManager::run() {
     int choice;
     do {
-        displayMenu();
-        cin >> choice;
-        cin.ignore();
-
+        displayMenu(); // Display the menu
+        
+        // Input validation to ensure valid menu choice.
+        while (!(cin >> choice) || choice < 0 || choice > 11) {
+            cin.clear(); // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Ignore invalid input
+            cout << "\n\tInvalid input. Please enter a number corresponding to the menu options (0-11): ";
+        }
+        cin.ignore(); // Consume any leftover input
+        
+       // Execute the function corresponding to the user's choice.
         switch (choice) {
             case 1:
                 printAllCustomers();
@@ -210,6 +234,13 @@ void BookstoreManager::run() {
                 cout << "\tSort (A)scending or (D)escending? ";
                 cin >> order;
                 cin.ignore();
+
+                // Validate sorting choice
+                while (toupper(order) != 'A' && toupper(order) != 'D') {
+                    cout << "\n\tInvalid input. Please enter 'A' for Ascending or 'D' for Descending: ";
+                    cin >> order;
+                    cin.ignore();
+                }
                 printCustomersByOrder(toupper(order) == 'A');
                 break;
             }
@@ -253,6 +284,13 @@ void BookstoreManager::run() {
                 cout << "\tCreate new files? (Y/N): ";
                 cin >> newFile;
                 cin.ignore();
+
+                // Validate Yes/No choice
+                while (toupper(newFile) != 'Y' && toupper(newFile) != 'N') {
+                    cout << "\n\tInvalid input. Please enter 'Y' for Yes or 'N': ";
+                    cin >> newFile;
+                    cin.ignore();
+                }
                 saveData(toupper(newFile) == 'Y');
                 waitForEnter();
                 break;
@@ -267,7 +305,9 @@ void BookstoreManager::run() {
     } while (choice != 0);
 }
 
-// Customer Management Functions
+
+// Adds a single new customer to the system.
+// Prompts the user for customer details and generates a new account number.
 void BookstoreManager::addCustomer() {
     string fn, ln, addr, city, state, zip, phone;
     
@@ -301,6 +341,8 @@ void BookstoreManager::addCustomer() {
     waitForEnter();
 }
 
+// Adds multiple customers to the system by repeatedly calling `addCustomer`.
+// Recursively prompts the user to add another customer.
 void BookstoreManager::addCustomersRecursive() {
     char more;
     addCustomer();
@@ -314,17 +356,21 @@ void BookstoreManager::addCustomersRecursive() {
     }
 }
 
+// Updates the details of an existing customer.
+// Prompts the user for new values or allows keeping existing values by pressing Enter.
 void BookstoreManager::updateCustomer() {
     string accNum;
     cout << "\n\tEnter account number to update: ";
     getline(cin, accNum);
     
+    // Validate account number
     if (!validateAccountNumber(accNum)) {
         cout << "\n\tCustomer not found!\n";
         waitForEnter();
         return;
     }
     
+    // Locate the customer by account number.
     auto it = find_if(customers.begin(), customers.end(),
         [&accNum](const AllCustomers& c) { return c.getAccountNumber() == accNum; });
     
@@ -336,6 +382,7 @@ void BookstoreManager::updateCustomer() {
     cout << "\t║ Press Enter to keep current value   ║\n";
     cout << "\t╚═════════════════════════════════════╝\n";
     
+    // Update customer details or keep current values if input is empty.
     cout << "\tFirst Name [" << it->getFirstName() << "]: ";
     getline(cin, fn);
     if (!fn.empty()) it->setFirstName(fn);
@@ -364,6 +411,8 @@ void BookstoreManager::updateCustomer() {
     waitForEnter();
 }
 
+// Deletes a customer and all their associated purchase records.
+// Prompts the user for the account number and removes matching data.
 void BookstoreManager::deleteCustomer() {
     string accNum;
     cout << "\n\tEnter account number to delete: ";
@@ -439,6 +488,8 @@ void BookstoreManager::addPurchasesRecursive() {
     }
 }
 
+// Generates and displays a receipt for a specific purchase.
+// Displays customer information, purchase details, and formatted output.
 void BookstoreManager::generateReceipt(const string& accountNum, const AllPurchases& purchase) const {
     cout << "\n\t╔═══════════════════════════════════╗\n";
     cout << "\t║           PURCHASE RECEIPT         ║\n";
@@ -458,6 +509,8 @@ void BookstoreManager::generateReceipt(const string& accountNum, const AllPurcha
     }
 }
 
+// Adds multiple purchases for a specific customer.
+// Prompts the user for item names, amounts, and validates inputs.
 void BookstoreManager::addBulkPurchases(const string& accountNum) {
     if (!validateAccountNumber(accountNum)) {
         cout << "\n\tInvalid account number!\n";
@@ -497,6 +550,7 @@ void BookstoreManager::addBulkPurchases(const string& accountNum) {
     waitForEnter();
 }
 
+// Calculates the total amount spent by a specific customer across all purchases.
 double BookstoreManager::getCustomerTotalSpend(const string& accountNum) const {
     double total = 0.0;
     for (const auto& purchase : purchases) {
@@ -507,7 +561,8 @@ double BookstoreManager::getCustomerTotalSpend(const string& accountNum) const {
     return total;
 }
 
-// Print Functions
+// Prints a formatted list of all customers in the system.
+// Displays account number, name, phone number, and address.
 void BookstoreManager::printAllCustomers() const {
     if (customers.empty()) {
         cout << "\n\tNo customers found.\n";
@@ -537,6 +592,7 @@ void BookstoreManager::printAllCustomers() const {
     waitForEnter();
 }
 
+// Prints customers sorted by their account numbers in ascending or descending order.
 void BookstoreManager::printCustomersByOrder(bool ascending) {
     vector<AllCustomers> sortedCustomers = customers;
     
@@ -567,6 +623,8 @@ void BookstoreManager::printCustomersByOrder(bool ascending) {
     waitForEnter();
 }
 
+// Prints detailed information for a specific customer.
+// Includes name, account number, address, phone number, and purchase history.
 void BookstoreManager::printCustomerDetails(const string& accountNum) const {
     auto it = find_if(customers.begin(), customers.end(),
         [&accountNum](const AllCustomers& c) { return c.getAccountNumber() == accountNum; });
@@ -610,19 +668,48 @@ void BookstoreManager::printCustomerDetails(const string& accountNum) const {
     }
 }
 
-// File Operations
+// Saves customer and purchase data to files.
+// Prompts for new filenames if the user chooses to create new files; otherwise, uses default filenames.
 void BookstoreManager::saveData(bool createNewFiles) {
-    string custFile = createNewFiles ? "customers_new.txt" : customerFileName;
-    string purchFile = createNewFiles ? "purchases_new.txt" : purchaseFileName;
+    string custFile, purchFile;
+
+    if (createNewFiles) {
+        // Prompt the user to enter a new filename for customer data.
+        cout << "\n\tEnter new filename for customer data (e.g., new_customers.txt): ";
+        getline(cin, custFile);
+        if (custFile.empty()) custFile = "new_customers.txt"; // Default name
+
+        // Prompt the user to enter a new filename for purchase data.
+        cout << "\tEnter new filename for purchase data (e.g., new_purchases.txt): ";
+        getline(cin, purchFile);
+        if (purchFile.empty()) purchFile = "new_purchases.txt"; // Default name
+    } else {
+        // Use existing filenames for saving data.
+        custFile = customerFileName;
+        purchFile = purchaseFileName;
+    }
     
+    // Save customer and purchase data to the specified files.
     saveCustomersToFile(custFile);
     savePurchasesToFile(purchFile);
     
-    cout << "\n\tData saved successfully!\n";
+    // Confirm successful saving of data.
+    cout << "\n\tData saved successfully to:\n\t- " << custFile << "\n\t- " << purchFile << "\n";
 }
 
+// Writes all customer data to a specified file.
+// Formats data in a pipe-delimited format (e.g., "FirstName|LastName|AccountNumber|Address|PhoneNumber").
 void BookstoreManager::saveCustomersToFile(const string& filename) {
-    ofstream file(filename);
+    string filePath = "/Users/syed12gen/Documents/Projects/TheLastProject/" + filename; // Save to the current directory
+    
+    // Open the file for writing.
+    ofstream file(filePath);
+    if (!file) {
+        cerr << "\n\tError: Could not create or write to file " << filePath << "\n";
+        return;
+    }
+    
+    // Write each customer's details to the file in pipe-delimited format.
     for (const auto& customer : customers) {
         file << customer.getFirstName() << "|"
              << customer.getLastName() << "|"
@@ -630,16 +717,35 @@ void BookstoreManager::saveCustomersToFile(const string& filename) {
              << customer.getFullAddress() << "|"
              << customer.getPhoneNumber() << "\n";
     }
+    
+    // Close the file after writing all data.
+    file.close();
+    cout << "\n\tCustomer data successfully written to " << filePath << "\n";
 }
 
+// Writes all purchase data to a specified file.
+// Formats data in a pipe-delimited format (e.g., "AccountNumber|Item|Date|Amount").
 void BookstoreManager::savePurchasesToFile(const string& filename) {
-    ofstream file(filename);
+    // Construct the file path (absolute path in this case).
+    string filePath = "/Users/syed12gen/Documents/Projects/TheLastProject/" + filename; // Absolute path
+    
+    // Open the file for writing.
+    ofstream file(filePath);
+    if (!file) {
+        cerr << "\n\tError: Could not create or write to file " << filePath << "\n";
+        return; // Exit if the file cannot be created or opened.
+    }
+    
+    // Write each purchase's details to the file in pipe-delimited format.
     for (const auto& purchase : purchases) {
         file << purchase.getAccountNumber() << "|"
              << purchase.getItem() << "|"
              << purchase.getDate() << "|"
              << purchase.getAmount() << "\n";
     }
+    
+    // Close the file after writing all data.
+    file.close();
+    cout << "\n\tPurchase data successfully written to " << filePath << "\n";
 }
-
 
